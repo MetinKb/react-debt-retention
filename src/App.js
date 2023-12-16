@@ -10,10 +10,12 @@ function App() {
   const [debtValue, setDebtValue] = useState("")
   const [people, setPeople] = useState(initialData)
   const [showAddDebt, setShowAddDebt] = useState(false)
-  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [selectedPerson, setSelectedPerson] = useState(null)
+  const [doIOwe, setDoIOwe] = useState(false)
 
   function handleAddPerson(person) {
-    setPeople((persons) => [...persons, person]);
+    setPeople(people => [...people, person])
+    setShowAddDebt(false)
   }
 
   function handleShowAddDebt() {
@@ -21,8 +23,26 @@ function App() {
   }
 
   function handleSelection(person) {
-    setSelectedPerson(cur => (cur?.id === person.id ? null : person));
-    setShowAddDebt(false);
+    setSelectedPerson(cur => (cur?.id === person.id ? null : person))
+    setDebtValue(cur => cur.id === person.id ? "" : person.debt)
+    setShowAddDebt(false)
+  }
+
+  function handleDebtValue(e) {
+    if (/^[0-9]*$/.test(e.target.value))
+      setDebtValue(Number(e.target.value))
+  }
+
+  function handleRemainingDebt(remaining) {
+    setPeople(people =>
+      people.map(person =>
+        person.id === selectedPerson.id
+          ? { ...person, debt: remaining }
+          : person
+      )
+    )
+    setDebtValue(remaining)
+    setSelectedPerson(null)
   }
 
   return (
@@ -30,7 +50,7 @@ function App() {
       <div className="sidebar">
         <People
           people={people}
-          selectedFriend={selectedPerson}
+          selectedPerson={selectedPerson}
           onSelection={handleSelection}
         />
 
@@ -38,7 +58,10 @@ function App() {
           <FormAddDebt
             debtValue={debtValue}
             setDebtValue={setDebtValue}
+            handleDebtValue={handleDebtValue}
             addPerson={handleAddPerson}
+            doIOwe={doIOwe}
+            setDoIowe={setDoIOwe}
           />}
 
         <Button onClick={handleShowAddDebt}>
@@ -49,8 +72,10 @@ function App() {
       {selectedPerson &&
         <DebtDetails
           debtValue={debtValue}
-          selectedPerson={selectedPerson}
           setDebtValue={setDebtValue}
+          selectedPerson={selectedPerson}
+          handleDebtValue={handleDebtValue}
+          handleRemainingDebt={handleRemainingDebt}
         />}
     </div>
   )

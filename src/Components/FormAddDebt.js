@@ -1,18 +1,17 @@
 import Button from 'Components/Button'
 import { useState } from 'react'
 
-function FormAddDebt({ debtValue, setDebtValue, addPerson }) {
+function FormAddDebt({ debtValue, setDebtValue, handleDebtValue, addPerson, doIOwe, setDoIOwe }) {
 
     const [name, setName] = useState("")
     const [image, setImage] = useState("https://i.pravatar.cc/48")
-    const [doIowe, setDoIOwe] = useState(false)
 
     function handleSubmit(e) {
         e.preventDefault()
 
         if (!name || !debtValue) return
 
-        const debt = doIowe ? -debtValue : debtValue
+        const debt = doIOwe ? -debtValue : debtValue
         const id = crypto.randomUUID()
         const newPerson = {
             id,
@@ -22,7 +21,7 @@ function FormAddDebt({ debtValue, setDebtValue, addPerson }) {
         }
 
         addPerson(newPerson)
-
+        setDebtValue("")
         setName("");
         setImage("https://i.pravatar.cc/48")
     }
@@ -39,7 +38,7 @@ function FormAddDebt({ debtValue, setDebtValue, addPerson }) {
 
             <label htmlFor="whose">My debt</label>
             <span className='checkbox'>
-                <input type="checkbox" checked={doIowe} onChange={() => setDoIOwe(!doIowe)} />
+                <input type="checkbox" checked={doIOwe} onChange={() => setDoIOwe(!doIOwe)} />
             </span>
 
             <label htmlFor="img">Image</label>
@@ -55,7 +54,8 @@ function FormAddDebt({ debtValue, setDebtValue, addPerson }) {
                 type="text"
                 id='debt-value'
                 value={debtValue}
-                onChange={e => setDebtValue(e.target.value)} />
+                onChange={handleDebtValue}
+            />
 
             <Button>Add Debt</Button>
         </form>

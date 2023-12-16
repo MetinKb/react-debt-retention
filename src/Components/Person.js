@@ -1,10 +1,10 @@
 import Button from 'Components/Button'
 
 function Person({ person, onSelection, selectedPerson }) {
-    const isSelected = selectedPerson?.id === person.id;
+    const isSelected = selectedPerson?.id === person.id
 
     return (
-        <li>
+        <li className={isSelected ? "selected" : ""}>
             <img src={person.image} alt={person.name} />
             <h3>{person.name}</h3>
 

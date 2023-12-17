@@ -1,5 +1,4 @@
 import Button from 'Components/Button'
-import initialData from 'data'
 import { useState } from 'react'
 
 function FormAddDebt({ debtValue, setDebtValue, handleDebtValue, addPerson }) {
@@ -31,8 +30,6 @@ function FormAddDebt({ debtValue, setDebtValue, handleDebtValue, addPerson }) {
             image,
             debt
         }
-
-        console.log(initialData)
 
         addPerson(newPerson)
         setDebtValue("")

@@ -4,7 +4,7 @@ import Button from 'Components/Button'
 function DebtDetails({ debtValue, handleRemainingDebt, handleDebtValue, selectedPerson }) {
 
     const [paidDebt, setPaidDebt] = useState("")
-    const remaining = debtValue - paidDebt
+    const remaining = debtValue > 0 ? debtValue - paidDebt : debtValue + paidDebt
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -18,7 +18,7 @@ function DebtDetails({ debtValue, handleRemainingDebt, handleDebtValue, selected
         const value = e.target.value
 
         if (/^[0-9]*$/.test(value))
-            setPaidDebt(Number(value) > debtValue ? paidDebt : Number(value))
+            setPaidDebt(Number(value) > Math.abs(debtValue) ? paidDebt : Number(value))
     }
 
     return (

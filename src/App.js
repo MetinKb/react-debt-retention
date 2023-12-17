@@ -11,7 +11,6 @@ function App() {
   const [people, setPeople] = useState(initialData)
   const [showAddDebt, setShowAddDebt] = useState(false)
   const [selectedPerson, setSelectedPerson] = useState(null)
-  const [doIOwe, setDoIOwe] = useState(false)
 
   function handleAddPerson(person) {
     setPeople(people => [...people, person])
@@ -23,8 +22,8 @@ function App() {
   }
 
   function handleSelection(person) {
-    setSelectedPerson(cur => (cur?.id === person.id ? null : person))
-    setDebtValue(cur => cur.id === person.id ? "" : person.debt)
+    setSelectedPerson(current => (current?.id === person.id ? null : person))
+    setDebtValue(current => current.id === person.id ? "" : person.debt)
     setShowAddDebt(false)
   }
 
@@ -60,8 +59,6 @@ function App() {
             setDebtValue={setDebtValue}
             handleDebtValue={handleDebtValue}
             addPerson={handleAddPerson}
-            doIOwe={doIOwe}
-            setDoIowe={setDoIOwe}
           />}
 
         <Button onClick={handleShowAddDebt}>

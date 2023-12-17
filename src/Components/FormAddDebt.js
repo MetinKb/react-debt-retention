@@ -1,10 +1,22 @@
 import Button from 'Components/Button'
+import initialData from 'data'
 import { useState } from 'react'
 
-function FormAddDebt({ debtValue, setDebtValue, handleDebtValue, addPerson, doIOwe, setDoIOwe }) {
+function FormAddDebt({ debtValue, setDebtValue, handleDebtValue, addPerson }) {
 
     const [name, setName] = useState("")
-    const [image, setImage] = useState("https://i.pravatar.cc/48")
+    const [doIOwe, setDoIOwe] = useState(false)
+    const [image, setImage] = useState("userprofile.jpg")
+
+    function handleImageChange(e) {
+        const file = e.target.files[0]
+
+        if (file) {
+            const reader = new FileReader()
+            reader.onload = e => setImage(e.target.result)
+            reader.readAsDataURL(file)
+        }
+    }
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -16,14 +28,17 @@ function FormAddDebt({ debtValue, setDebtValue, handleDebtValue, addPerson, doIO
         const newPerson = {
             id,
             name,
-            image: `${image}?=${id}`,
+            image,
             debt
         }
 
+        console.log(initialData)
+
         addPerson(newPerson)
         setDebtValue("")
-        setName("");
-        setImage("https://i.pravatar.cc/48")
+        setName("")
+        setImage("userprofile.jpg")
+        setDoIOwe(false)
     }
 
     return (
@@ -38,15 +53,15 @@ function FormAddDebt({ debtValue, setDebtValue, handleDebtValue, addPerson, doIO
 
             <label htmlFor="whose">My debt</label>
             <span className='checkbox'>
-                <input type="checkbox" checked={doIOwe} onChange={() => setDoIOwe(!doIOwe)} />
+                <input type="checkbox" checked={doIOwe} onChange={e => setDoIOwe(e.target.value)} />
             </span>
 
             <label htmlFor="img">Image</label>
             <input
-                type="text"
+                type="file"
+                accept="image/*"
                 id='img'
-                value={image}
-                onChange={e => setImage(e.target.value)}
+                onChange={handleImageChange}
             />
 
             <label htmlFor="debt-value">Debt value</label>

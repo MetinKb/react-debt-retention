@@ -3,7 +3,7 @@ import Person from 'Components/Person'
 function People({ people, onSelection, selectedPerson }) {
     return (
         <ul>
-            {people.map(person =>
+            {people.length > 0 && people.map(person =>
                 <Person
                     person={person}
                     key={person.id}

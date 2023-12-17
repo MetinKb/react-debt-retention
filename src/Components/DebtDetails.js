@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Button from 'Components/Button'
 
-function DebtDetails({ debtValue, handleRemainingDebt, handleDebtValue, selectedPerson }) {
+function DebtDetails({ debtValue, setDebtValue, handleRemainingDebt, handleDebtValue, selectedPerson }) {
 
     const [paidDebt, setPaidDebt] = useState("")
     const remaining = debtValue > 0 ? debtValue - paidDebt : debtValue + paidDebt
@@ -12,6 +12,7 @@ function DebtDetails({ debtValue, handleRemainingDebt, handleDebtValue, selected
         if (!debtValue) return
 
         handleRemainingDebt(remaining)
+        setDebtValue("")
     }
 
     function handlePaid(e) {
@@ -29,7 +30,7 @@ function DebtDetails({ debtValue, handleRemainingDebt, handleDebtValue, selected
             <input
                 type="text"
                 id="debt-value"
-                value={debtValue}
+                value={Math.abs(debtValue)}
                 onChange={handleDebtValue}
             />
 

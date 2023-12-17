@@ -2,15 +2,26 @@ import Button from "Components/Button"
 import DebtDetails from "Components/DebtDetails"
 import People from "Components/People"
 import FormAddDebt from "Components/FormAddDebt"
-import { useState } from 'react'
-import initialData from "data"
+import { useEffect, useState } from 'react'
 
 function App() {
 
   const [debtValue, setDebtValue] = useState("")
-  const [people, setPeople] = useState(initialData)
+  const [people, setPeople] = useState(() => {
+    const storedData = localStorage.getItem("people")
+    return storedData ? JSON.parse(storedData) : []
+  })
   const [showAddDebt, setShowAddDebt] = useState(false)
   const [selectedPerson, setSelectedPerson] = useState(null)
+
+  useEffect(() => {
+    localStorage.setItem("people", JSON.stringify(people))
+  })
+
+  useEffect(() => {
+    const people = localStorage.getItem("people")
+    setPeople(JSON.parse(people))
+  }, [])
 
   function handleAddPerson(person) {
     setPeople(people => [...people, person])
@@ -19,6 +30,13 @@ function App() {
 
   function handleShowAddDebt() {
     setShowAddDebt(!showAddDebt)
+  }
+
+  function handleClearLocalStorage() {
+    if (window.confirm("Are you sure you want to delete all records?")) {
+      localStorage.clear()
+      setPeople([])
+    }
   }
 
   function handleSelection(person) {
@@ -64,6 +82,11 @@ function App() {
         <Button onClick={handleShowAddDebt}>
           {showAddDebt ? "Close" : "Add Someone"}
         </Button>
+
+        {people.length > 0 &&
+          <Button onClick={handleClearLocalStorage}>
+            Clear All
+          </Button>}
       </div>
 
       {selectedPerson &&

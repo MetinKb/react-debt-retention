@@ -1,1 +1,1 @@
-debt-retentation.netlify.app
+https://debt-retentation.netlify.app
